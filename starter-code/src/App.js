@@ -1,18 +1,36 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import data from "./data.json";
+import FilterableProductTable from "./components/FilterableProductTable";
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      dataArray: data.data
+    };
+  }
+
+  updateName(event) {
+    const { value } = event.target;
+    console.log("value", value);
+    const { dataArray } = this.state;
+    console.log("dataArray", dataArray);
+    const newArray = dataArray.filter(oneData => {
+      return oneData.name.includes(value);
+    });
+    this.setState({
+      nameValue: value,
+      dataArray: newArray
+    });
+  }
+
   render() {
+    const { dataArray } = this.state;
+    console.log("App.js", dataArray);
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <FilterableProductTable products={dataArray} />
       </div>
     );
   }
